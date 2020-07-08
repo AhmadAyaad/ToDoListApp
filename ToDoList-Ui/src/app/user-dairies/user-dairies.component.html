@@ -1,0 +1,18 @@
+
+<div class="container">
+    <div class="row">
+        <div class ="col-sm-12">
+            <div class="card" *ngFor="let user of users?.dairies; let i =index" >
+                <h5 class="card-header"> Dairy#{{i+1}} {{user.text}}</h5>
+                <div class="card-body">
+                <h5 class="card-title">Date is : {{user.date}}</h5>
+                <p class="card-text">Time is : {{user.time}}.</p>
+                <div *ngFor = "let photo of user.photos">
+                    <img src="{{photo.url}}" style="width: 50px; height: 50px;"/>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

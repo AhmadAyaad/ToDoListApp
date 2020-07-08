@@ -24,16 +24,14 @@ namespace ToDoList.API.Controllers
     {
         private readonly IDairyRepository _dairyRepository;
         private readonly IUserRepository _userRepository;
-        private readonly DataContext context;
         readonly IOptions<CloudinarySettings> _cloudinaryConfig;
         readonly Cloudinary _cloudinary;
-        public DairyController(IDairyRepository dairyRepository, IUserRepository userRepository
-           , DataContext context, IOptions<CloudinarySettings> cloudinaryConfig)
+        public DairyController(IDairyRepository dairyRepository, IUserRepository userRepository,
+            IOptions<CloudinarySettings> cloudinaryConfig)
         {
             _cloudinaryConfig = cloudinaryConfig;
             _dairyRepository = dairyRepository;
             _userRepository = userRepository;
-            this.context = context;
 
             Account account = new Account
             {
@@ -76,14 +74,14 @@ namespace ToDoList.API.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateDairy([FromForm] DairyForCreateDto dairyForCreate, int userId)
+        public IActionResult CreateDairy([FromForm] DairyForCreateDto dairyForCreate, int userId)
         {
             var uId = Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             if (userId != uId)
                 return Unauthorized();
 
 
-            var user = await _userRepository.GetUser(uId);
+            var user =  _userRepository.GetUser(uId);
 
             var file = dairyForCreate.File;
             //this is the reponse that will be recvied from cloudinary
@@ -122,18 +120,12 @@ namespace ToDoList.API.Controllers
             Photo photo = new Photo
             {
                 DairyId = dairyForCreate.DairyId,
-                DataAdded = DateTime.Now
-                ,
+                DataAdded = DateTime.Now,
                 PublicId = dairyForCreate.PublicId,
                 Url = dairyForCreate.Url
             };
 
             User newUser = new User { UserId = userId };
-
-            //dairy.Photos.Add(photo);
-
-            //user.Dairies.Add(dairy);
-
 
 
             _dairyRepository.CreateDairy(dairy, photo , newUser);
@@ -141,51 +133,6 @@ namespace ToDoList.API.Controllers
         }
 
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddPhotoUser(int userId, [FromForm] PhotoForCreationDto photoForCreationDto)
-        //{
-        //    if (userId != Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-        //        return Unauthorized();
-
-        //    var userFromRepo = await _userRepository.GetUser(userId);
-        //    var file = photoForCreationDto.File;
-        //    //this is the reponse that will be recvied from cloudinary
-        //    var uploadResult = new ImageUploadResult();
-
-        //    if (file.Length > 0)
-        //    {
-        //        using (var stream = file.OpenReadStream())
-        //        {
-        //            var uploadParams = new ImageUploadParams()
-        //            {
-        //                File = new FileDescription(file.Name, stream),
-        //                //3shan n3dl fl sora lw hya akbr mn 500 s3tha hy2os mn 3la el 7rof 
-        //                //we yrkz 3lael wsh 
-        //                Transformation = new Transformation().Width(500).Height(500).Crop("fill").Gravity("face")
-        //            };
-        //            //hna el sora et3mlha upload kda
-        //            uploadResult = _cloudinary.Upload(uploadParams);
-        //        }
-        //    }
-        //    //bn3ml set ll url bta3 el sora bl dto bta3y elly hyro7 el db
-        //    photoForCreationDto.Url = uploadResult.Url.ToString();
-        //    photoForCreationDto.PublicId = uploadResult.PublicId;
-
-        //    //bn3ml map ll photodto ll photo (our original entity)
-        //    var photo = _mapper.Map<Photo>(photoForCreationDto);
-
-
-        //    userFromRepo.Photos.Add(photo);
-        //    if (await _userRepository.SaveAll())
-        //    {
-        //        var photoToReturn = _mapper.Map<PhotoToReturnDto>(photo);
-        //        return Ok(photoToReturn);
-        //        //return CreatedAtRoute("GetPhoto",
-        //        //    new { id = photo.Id }, photoToReturn);
-
-        //    }
-        //    return BadRequest("Could not add the image");
-
-        //}
+       
     }
 }

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.API.Data;
+using ToDoList.API.Dtos;
 using ToDoList.API.Models;
 
 namespace ToDoList.API.Repository
@@ -15,10 +17,18 @@ namespace ToDoList.API.Repository
         {
             _context = context;
         }
-        public async Task<User> GetUser(int id)
+        public UserDairiesDto GetUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
-            return user;
+            var user = _context.Users.Include("Dairies.Photos").FirstOrDefault(u => u.UserId == id);
+            user.Dairies = user.Dairies.OrderByDescending(d =>d.Date).ThenByDescending(d=>d.Time).ToList();
+            
+            UserDairiesDto userDairiesDto = new UserDairiesDto
+            {
+                UserId = user.UserId,
+                UserName = user.UserName,
+                Dairies = user.Dairies
+            };
+            return userDairiesDto;
         }
     }
 }

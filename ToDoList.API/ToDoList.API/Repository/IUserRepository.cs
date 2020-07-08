@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ToDoList.API.Dtos;
 using ToDoList.API.Models;
 
 namespace ToDoList.API.Repository
@@ -9,6 +10,6 @@ namespace ToDoList.API.Repository
     public interface IUserRepository
     {
 
-        Task<User> GetUser(int id);
+        UserDairiesDto GetUser(int id);
     }
 }

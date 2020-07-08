@@ -1,0 +1,57 @@
+
+
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top badge-dark">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/home">ToDoList App</a>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+   
+
+      <div *ngIf="isLogedIn()" >
+      
+        <a class="text-info">
+          welcome {{ authService.decodedToken?.unique_name| titlecase }}
+        </a>
+        <a class="text-light ml-4" routerLink= '/dairy' routerLinkActive ="active" >Create Dairy</a>
+        <a class="text-light ml-4" routerLink='/mydairies' routerLinkActive="active">My Dairies</a>
+        <a class="text-light ml-4" (click)= "logout()" >Logout</a> 
+      </div>
+
+
+      
+      <div *ngIf="!isLogedIn()" class="ml-auto">
+        <form
+          #loginForm="ngForm"
+          class="form-inline my-2 my-lg-0"
+          (ngSubmit)="login()"
+        >
+          <input
+            class="form-control mr-sm-2"
+            type="text"
+            required
+            placeholder="username"
+            name="username"
+            [(ngModel)]="userModel.username"
+
+          />
+          <input
+            class="form-control mr-sm-2"
+            type="password"
+            required
+            placeholder="password"
+            name="password"
+            [(ngModel)]="userModel.password"
+          />
+          <button
+            class="btn btn-success my-2 my-sm-0"
+            [disabled]="!loginForm.valid"
+            type="submit"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</nav>

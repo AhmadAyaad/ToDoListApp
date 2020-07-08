@@ -40,7 +40,6 @@ namespace ToDoList.API
             services.AddCors();
             services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling =
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-            //services.AddAutoMapper(typeof(Startup));
 
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDairyRepository, DairyRepository>();

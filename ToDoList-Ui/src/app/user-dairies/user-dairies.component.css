@@ -1,0 +1,8 @@
+.dairies{
+    border: 2px #fff000 solid ;
+    margin: 20px;
+    background-color: darkgray;
+}
+.date{
+    font-weight: bold;
+}

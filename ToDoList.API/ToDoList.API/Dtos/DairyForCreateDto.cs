@@ -12,7 +12,7 @@ namespace ToDoList.API.Dtos
         public int DairyId { get; set; }
         public string Text { get; set; }
         public DateTime Date { get; set; }
-        public DateTime Time { get; set; }
+        public TimeSpan Time { get; set; }
         public int UserId { get; set; }
         public IFormFile File { get; set; }
         public string Url { get; set; }
